@@ -1,0 +1,119 @@
+Objetivos
+
+Consultar datos de una tabla =>  select * from nombreTabla,  
+
+filtrando por columna =>  select campo1, campo2 from nombreTabla 
+
+por condición =>  select * from nombreTabla where id > 2 
+
+ordenando los resultados =>  select * from nombreTabla order by nombre DESC
+
+limitando la cantidad de respuestas => select * from nombreTabla limit 2
+
+
+Insertar => insert nombreTabla (campo1, campo2) values('valor1', 'valor2')
+
+modificar => update nombreTabla set campo1 = 'nombre'  where campo1 = 'victoria'
+
+eliminar datos delete from nombreTabla where nombre = 'Victoria'
+
+de una tabla
+
+
+Crear create table nuevaTabla(
+  id,
+  nombre,
+  apellido,
+  email ,
+) 
+
+modificar  =>  alter table drop column campo1 => alter table add column campo1 datatype
+
+
+borrar tablas drop table nuevaTabla 
+
+-------------------------------------------------
+
+¿Por qué necesitamos bases de datos?
+
+Guardar información de forma permanente (o por un largo
+tiempo).
+Permiten guardar millones de registros y recuperar los que
+necesitamos de forma sencilla.
+
+  ✅ Aprenderemos a crear una base de
+  datos, guardar datos en ella y recuperarlos, todo esto
+  utilizando un lenguaje llamado SQL.
+  ✅ Esto nos permitirá crear aplicaciones que guarden
+  datos o utilicen datos ya guardados.
+
+
+Conceptos básicos
+
+Existen distintos tipos de motores de bases de datos.
+Utilizaremos postgreSQL uno de los más utilizados.
+  ✅ Pertenece al tipo de motor conocido como bases de datos relacionales.
+  ✅ Una base de datos relacional es, a cierto modo, similar a un archivo
+  excel. 
+  ✅ Tenemos múltiples tablas que guardan información, cada fila de la
+  tabla es un registro
+
+
+Primera consulta
+  ✅ SELECT * FROM demo;
+
+Consulta especificando el campo
+  ✅ SELECT c1,c3 FROM tabla;
+
+Consulta con condición
+  ✅ SELECT * FROM tabla where c4 = True
+
+
+Consulta especificando límites
+  ✅ SELECT * FROM tabla LIMIT 2;
+
+Consulta con resultados ordenados
+  ✅ SELECT * FROM tabla ORDER BY c1 DESC;
+
+select * from demo;
+
+Select name, HINT from demo;
+
+Select * from demo where id > 2;
+
+Select * from demo where name = 'limit db';
+
+select * from demo LIMIT 3;
+
+SELECT * FROM demo Order by id  
+
+
+Insertando datos
+  ✅ INSERT INTO demo (NAME, HINT) VALUES ('Gonzalo', 'Pista 1');
+
+
+Actualizando un registro
+  ✅ UPDATE demo SET hint ='cambiado' WHERE id = 1;
+
+Eliminación de registros
+  ✅ DELETE FROM tabla WHERE columna=condicion;
+
+
+Tipos de datos
+  ✅ https://www.w3schools.com/sql/sql_datatypes.asp
+
+
+Creando una tabla nueva
+  ✅ CREATE TABLE tabla(
+  columna1 tipo_de_dato,
+  columna2 tipo_de_dato
+  );
+
+Borrando una tabla
+  ✅ Drop TABLE alumnos; 
+
+Modificando una tabla 
+  ✅ ALTER TABLE alumnos drop column
+  nota3;
+  ✅ ALTER TABLE alumnos add column
+  nota3 integer;

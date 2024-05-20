@@ -1,0 +1,171 @@
+CONSULTAS AGRUPADAS.
+
+OBJETIVOS:
+Crear consultas para generar reportes
+Contar registros COUNT() y registros únicos COUNT(DISTINCT nombre_columna)
+
+Agrupar y aplicar funciones de agregado sobre registros agrupados 
+- Contar
+- Sumar
+- Promediar
+
+Diferenciar el uso de where y having 
+
+Realizar subconsultas
+
+-------------------------------------------------
+Tabla a utilizar:
+
+drop  TABLE  if EXISTS ordenes;
+CREATE TABLE  if not EXISTS ordenes (
+    ordenID INT,
+    usuario VARCHAR(50),
+    curso VARCHAR(255),
+    precio DECIMAL(10, 2),
+    fecha DATE
+);
+
+
+INSERT INTO ordenes (ordenID, usuario, curso, precio, fecha)
+VALUES
+      (1, 'Lucas', 'Desarrollo web', 59.97, '2024-03-10'),
+      (2, 'Lucas', 'JavaScript', 80.00, '2024-04-20'),
+      (3, 'Lucas', 'React', 100.00, '2024-05-14'),
+      (4, 'Diego', 'Desarrollo web', 59.97, '2024-04-10'),
+      (5, 'Diego', 'JavaScript', 80.00, '2024-04-20'),
+      (6, 'Diego', 'React', 100.00, '2024-04-20'),
+      (7, 'Diego', 'Node JS', 120.00, '2024-03-10'),
+      (8, 'Marta', 'Node JS', 120.00, '2024-03-10'),
+      (9, 'Marta', 'React', 100.00, '2024-04-20'),
+      (10, 'Nicole', 'Base de datos', 200.00, '2024-04-25'),
+      (11, 'Cristian', 'Base de datos', 200.00, '2024-04-25'),
+      (12, 'Diego', 'Base de datos', 200.00, '2024-04-25'),
+      (13, 'Juan', 'Base de datos', 200.00, '2024-04-25');
+      
+ SELECT * FROM ordenes
+  
+Contar la cantidad registros - ventas
+Contar y agrupar las ventas por curso
+Contar las ventas con precio mayor a 120
+Contar las ventas de la ultima fecha registrada
+
+
+Sumar el monto total de las ordenes
+Sumar y agrupar el total vendido por curso
+Sumar el total de ordenes de un solo usuario
+
+
+Promedio de precio de las ordenes
+Promedio de precio agrupado por fechas
+
+Where V.S Having
+transacciones por usuario filtrando las superiores a 500
+
+Subconsultas
+Devolver todos los productos con un precio superior al precio medio
+-------------------------------------------------
+
+
+Contar
+  La función COUNT() devuelve el número de filas que coinciden con un criterio específico.
+
+
+  SELECT COUNT(*)
+  FROM table_name
+
+
+
+  SELECT COUNT(column_name)
+  FROM table_name
+  Puede especificar un nombre de columna en lugar del símbolo de asterisco (*). Si especifica un nombre de columna en lugar de (*), los valores NULL no se contarán.
+
+
+
+  SELECT COUNT(column_name)
+  FROM table_name
+  WHERE condition;
+
+
+
+
+
+  SELECT count(*) FROM productos where
+  ProductName = 'Camiseta' or ProductName = 'Zapatos'
+
+  Ignorar duplicados
+  ¿Cuántos precios diferentes hay en la tabla Productos? Sin repeticiones
+  SELECT COUNT(DISTINCT Price)
+  FROM Products;
+
+Contar y agrupar
+
+  Aquí usamos la función COUNT() y la cláusula GROUP BY, para devolver el número de registros para cada categoría en la tabla Productos:
+
+  SELECT COUNT(*) AS [Number of records], CategoryID
+  FROM Products
+  GROUP BY CategoryID;
+
+  Cantidad de compras por usuario
+  Ventas por categoria
+
+Sumar
+  La función SUM() devuelve la suma total de una columna numérica
+
+  ¿Cuánto se vendió en total de cada categoría?
+  Devuelve la suma de todos los campos de Cantidad en la tabla ordenes
+  Devuelve la suma del campo Cantidad para el producto con ProductID 11
+
+  SELECT SUM(column_name)
+  FROM table_name
+  WHERE condition;
+
+  Sumar y agrupar
+  SELECT SUM(column_name), CategoryID
+  FROM table_name
+  WHERE condition;
+  GROUP BY CategoryID
+
+Promedio
+  La función AVG() devuelve el valor promedio de una columna numérica.
+
+  SELECT AVG(Price)
+  FROM Products
+  WHERE CategoryID = 1;
+
+  Calcular el precio promedio de todos los productos
+  Calcular el ticket promedio de las venta
+  Calcular el precio promedio de una categoria
+  Calcular el precio promedio agrupando por categoria
+
+Where V.S Having
+
+  Con where podemos filtrar en base a
+  una condición
+  Si necesitamos realizar una funcion de agregacion y luego filtar lo hacemos con HAVING
+
+  ¿Qué tendríamos que hacer si
+  queremos seleccionar todas
+  las categorías, que al
+  agruparlas, sumen montos
+  mayor a 200? 
+
+  Listar el monto total en transacciones por usuario
+  filtrando aquellas inferiores a 500 Unidades
+  Monetarias.
+
+Subconsultas
+  En algunos casos vamos a querer seleccionar datos en base al resultado de otra consulta. Por ejemplo,
+  Devolver todos los productos con un precio superior al precio medio:
+  pasando los resultados de la consulta más interna a la consulta más externa a través de una cláusula WHERE o de la cláusula HAVING.
+
+  SELECT *
+  FROM ventas
+  WHERE monto >
+  (SELECT avg(monto)
+  FROM ventas);
+  
+  Las subconsulta debe ir envuelta en paréntesis
+  El punto y coma (;) solo se utiliza al final de la consulta
+  para terminarla
+
+  Precio por unidad de las ordenes
