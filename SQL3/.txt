@@ -1,7 +1,7 @@
 Consultas en múltiples tablas
 
 OBJETIVOS:
-- Realizar un cruce de tablas con select
+- Realizar un cruce de tablas con select - where
 - Realizar cruces de tablas con joins
     INNER JOIN
     LEFT JOIN
@@ -26,8 +26,6 @@ queremos saber qué tweets ha publicado cada usuario; necesitamos saber a qué u
 pertenece un tweet.
 En otras palabras, tiene que haber una (o más) columnas que nos permitan juntar la
 información de la tabla 1 con la tabla 2
-
-
 
 
 -------------------------------------------------
