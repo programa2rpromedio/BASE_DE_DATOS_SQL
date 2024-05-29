@@ -1,0 +1,103 @@
+Consultas en múltiples tablas
+
+OBJETIVOS:
+- Realizar un cruce de tablas con select
+- Realizar cruces de tablas con joins
+    INNER JOIN
+    LEFT JOIN
+    FULL JOIN
+    CROSS JOIN
+- Diferenciar cuándo utilizar cada tipo de join
+
+-------------------------------------------------
+
+Repaso de conceptos básicos
+Con frecuencia, los datos que necesitaremos en nuestro trabajo estarán repartidos en
+múltiples tablas. Por lo cual, parte importante de trabajar con SQL es saber cruzar estos
+datos y obtener la información que necesitemos, sin importar en cuántas tablas estén
+repartidos.
+
+Condiciones necesarias para juntar datos entre 2 tablas
+A menos que queramos obtener una combinación de todos los registros de la tabla 1 con
+cada uno de los registros de la tabla 2, para unir dos tablas necesitaremos un elemento en
+común. Por ejemplo, si queremos unir los registros de posteos con los registros de
+comentarios, necesitamos saber a qué posteo pertenece un comentario. Lo mismo si
+queremos saber qué tweets ha publicado cada usuario; necesitamos saber a qué usuario
+pertenece un tweet.
+En otras palabras, tiene que haber una (o más) columnas que nos permitan juntar la
+información de la tabla 1 con la tabla 2
+
+
+
+
+-------------------------------------------------
+Tabla a utilizar:
+CREATE TABLE Usuarios (
+  id INT,
+  nombre VARCHAR(255),
+  email VARCHAR(255),
+  rol VARCHAR(255)
+);
+
+CREATE TABLE Cursos (
+  id INT ,
+  nombre VARCHAR(255),
+  fecha_creacion DATE,
+  autor_id INT
+);
+
+CREATE TABLE Comisiones (
+  id INT,
+  curso_id INT,
+  fecha_inicio DATE ,
+  profesor_id INT
+);
+
+CREATE TABLE Inscriptos (
+  alumno_id INT,
+  comision_id INT
+);
+  
+Consultas en múltiples tablas
+  Al utilizar FROM con múltiples tablas todos los datos de ambas tablas se cruzan
+  Utilizando WHERE se filtran los datos que no corresponden.
+  SELECT * FROM múltiples tablas
+  
+  SELECT * FROM comments,
+  posts WHERE post_id = id;
+
+  También podemos escoger todas las columnas de una
+  tabla utilizando nombre_tabla.* 
+  Utilizar el nombre de la tabla será particularmente útil
+  para diferenciar cuando un campo tenga el mismo
+  nombre en ambas tablas.
+
+  SELECT posts.*, comments.* FROM
+  comments, posts WHERE post_id = id;
+
+
+Joins
+  Los joins nos dan flexibilidad a la hora de escoger qué registros incluir de cada tabla.
+  La sintaxis para unir tablas con join es la siguiente:
+  SELECT *
+  FROM tabla1
+  TIPO-DE-JOIN tabla2
+  ON tabla1.campo = tabla2.campo
+
+  diagrama-de-venn
+  https://www.lucidchart.com/pages/es/que-es-un-diagrama-de-venn
+  cheat-sheet 
+  https://learnsql.com/blog/sql-join-cheat-sheet/joins-cheat-sheet-a4.pdf
+  Los tipos de join difieren especialmente en qué hacer cuando el campo que los une es nulo.
+  Para probar esto tendremos que actualizar nuestros datos.
+
+
+-------------------------------------------------
+
+Cruza los datos de la tabla usuarios y cursos, mostrando las columnas nombre y email del usuario, nombre y fecha de creacion del curso
+Cuenta las comisiones que tiene asignada cada profesor.
+Cuenta las comisiones agrupadas por curso.
+Muestra el email del usuario que esta inscripto en mas cursos.
+Muestra la comision y nombre de curso con mas inscriptos.
+Cuenta los cursos en los que esta inscripto cada usuario.
+Muestra los usuarios que no se han inscripto en ninguna comision.
