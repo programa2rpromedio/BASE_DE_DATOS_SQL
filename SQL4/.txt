@@ -1,0 +1,166 @@
+Integridad y modelos de datos
+
+🟢 OBJETIVOS:
+  Agregar una clave primaria 
+  Agregar una clave foránea 
+  Convertir un modelo de datos a una base de datos
+
+---------------------------------------------------
+
+🟢  INTRODUCCION.
+
+  La integridad es un concepto importante en bases de datos y se refiere a cuánto podemos
+  realmente confiar en nuestros en datos. 
+
+  ● Integridad referencial: Generada entre datos que se cruzan entre varias tablas.
+  ● Integridad mediante clave primaria: Generada a través de un dato que contiene un valor único, por
+  ejemplo la clave primaria (Primay Key, PK)
+  ● Integridad mediante restricciones: Generada a partir de la restricción de los tipos de valores que se
+  pueden almacenar en un campo de una tabla.
+
+
+  Nombre | Edad
+  Consuelo  27
+  Consuelo  32
+  Francisco 27
+
+  ¿Por qué dejaríamos de confiar en nuestros datos? Porque a través de consultas con
+  insert, update o delete podríamos alterar por accidente datos que no queremos
+  alterar.
+
+  🟡 Si queremos aumentar la edad de Consuelo, ¿cómo lo hacemos?
+    ● Si actualizamos por edad, modificaremos 2 registros.
+    ● Si actualizamos por nombre, modificaremos 2 registros.
+    ● Es posible modificar por ambos, pero en algunas ocasiones se nos podría olvidar y
+    causar un problema de correctitud de datos
+
+🟢 Clave primaria (PK) - Integridad mediante clave primaria
+
+  Si queremos que nuestros registros no se repitan y tener una forma de indentificarlos univocamente podemos agregar una nueva
+  columna, y en ella guardar un valor que sea único por cada registro. Sin embargo,
+  simplemente agregar una columna no resuelve completamente el problema, ya que no es
+  correcto depender únicamente de las buenas prácticas de la organización. Dicho de otro
+  modo, se trata de una solución “frágil”.
+
+  Para asegurarnos que este valor realmente no pueda repetirse (y con ello amenazar la
+  integridad de los datos), especificaremos que esta columna es clave primaria (primary key,
+  abreviado PK).
+
+  Al establecer que un campo es clave primaria
+  (Primary key, abreviado PK) nos aseguramos de
+  que deba ser único y además que no pueda ser
+  nulo.
+
+  ● La clave primaria nos permite identificar de forma única un registro.
+  ● Una clave primaria es una restricción que impide que los valores
+  ingresados en esa columna estén repetidos o sean nulos.
+  ● No es necesario que la clave primaria sea un campo llamado id. También
+  puede ser un email, por ejemplo, pero debe cumplir que sea el único registro en esa
+  tabla con dicho email.
+
+
+  🟡  Intentemos insertar dos usuario con el mismo id
+  y un usuario sin id 
+
+🟢 clave foránea - Foreign Key - FK  - Integridad referencial
+
+  En otras ocasiones nos interesará que no se borre un registro relacionado con otro registro.
+  Por ejemplo, si tenemos dos tablas relacionadas - una de usuarios y otra de pagos -
+  podríamos insertar un pago asociado a un usuario que no existe, o podríamos borrar un
+  usuario y se perdería la información de quién realizó un pago. En ambos casos, se trata de
+  un riesgo para el negocio.
+
+   🟡 Crea la tabla pagos y la tabla usuarios. En ambas, id es clave primaria, nombre es
+  varchar(255) y monto y usuario_id son integers.
+  2. Ingresa los mismos datos especificados en las tablas diagramadas en la actividad.
+  3. Borra el usuario 2 de la tabla.
+  4. Selecciona todos los pagos.
+  a. ¿Tiene sentido que haya un pago a un usuario 4 que no existe y nunca ha
+  existido?
+  b. ¿Tiene sentido que haya un pago al usuario 2 que acabamos de borrar y, por
+  lo tanto, tampoco existe?
+
+  Este tipo de problemas se conocen como “de integridad referencial”. La integridad de datos
+  del modelo peligra debido a que se pueden producir referencias incorrectas entre los datos
+  de las distintas tablas.
+
+  CREATE TABLE pagos (
+  id int primary key,
+  monto int,
+  usuario_id int references users(id)
+  );
+
+  ● La clave foránea nos permite protegernos de problemas de integridad
+  referencial
+  ● La clave foránea tiene que ir asociada a una clave única o primaria de
+  otra tabla. De preferencia debe ser primaria.
+  ● Al utilizar una clave foránea no podremos tener elementos asociados a
+  un registro no existente. Esto generará un error tanto si intentamos ingresar registros
+  asociados a un registro que no existe, o si intentamos borrar un registro al cual
+  tenemos registros asociados.
+
+🟢 Borrado en cascada
+  CREATE TABLE comments (
+  "id" Integer,
+  "content" Varchar(255),
+  "post_id" Integer,
+  PRIMARY KEY ("id"),
+  FOREIGN KEY ("post_id")
+  REFERENCES posts ("id")
+  ON DELETE CASCADE /* Con esto los datos se borrarán en cascada
+  automáticamente */
+  );
+
+🟢 Otras Restricciones
+  Así como podemos implementar restricciones de clave primaría y de clave foránea, también
+  es posible implementar otras restricciones.
+  ● Not Null
+  ● Unique
+  ● Check
+  Los checks nos permiten agregar restricciones con base en alguna regla específica, por
+  ejemplo, que un valor sea mayor que cero o que otro número, o que tenga que ser distinto de
+  cierto texto. 
+  CREATE TABLE productos(
+  "nombre" VARCHAR(200),
+  "stock" INTEGER CHECK (stock >= 0)
+  );
+
+🟢 Modelos de datos
+
+  En ocasiones nos entregarán un diagrama del modelo de datos en lugar de una tabla.
+  Dentro de los modelos de entidad relación (ER) existen 3 tipos de modelos más conocidos:
+  ● Modelo conceptual
+  ● Modelo lógico
+  ● Modelo físico
+    el modelo físico ya presenta todos los detalles necesarios para la implementación
+    del modelo de datos en un base de datos del motor escogido. Por lo mismo, el
+    modelo físico es el que más se asemeja a su implementación final.
+
+  Modelo físico
+  En términos prácticos, es un diagrama que nos permite comunicar de forma gráfica nuestro
+  modelo de datos. Las relaciones entre tablas se indican con una línea cuyas terminaciones
+  indican el tipo de relación que existe.
+
+  🟢 Cardinalidad
+  Hablaremos de cardinalidad cuando hablemos de qué tipo de relación hay entre dos tablas.
+  Principalmente veremos 3 casos:
+  ● 1 : 1 (Uno a uno)
+  ● 1 : N (Uno a muchos)
+  ● N : N (Muchos a muchos)
+
+  🟡 Ejemplo de relación de 1 a N
+  Las relaciones 1 a N indican que un elemento de una tabla puede estar asociado a muchos
+  elementos de otra tabla.
+
+
+  🟡 Relaciones N a N
+  Las relaciones N a N indican que un elemento de una tabla A puede estar asociado a
+  múltiples elementos de la tabla B, y un elemento de la tabla B puede estar asociado a
+  múltiples elementos de la tabla A.
+
+  Un modelo N a N no se puede implementar directamente en una base de datos relacional,
+  pero podemos hacerlo creando una tabla intermedia.
+
+  La lógica de la tabla intermedia siempre es igual: entre 2 tablas de N a N agregamos una
+  tabla que contiene las FK de las otras dos tablas. La tabla intermedia siempre queda del
+  lado de “muchos”.
